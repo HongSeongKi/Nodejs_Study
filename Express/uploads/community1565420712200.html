@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Community</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-pink.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+.w3-sidebar {
+  z-index: 3;
+  width: 250px;
+  top: 43px;
+  bottom: 0;
+  height: inherit;
+}
+</style>
+<body onload="f2()">
+
+<!-- Navbar -->
+<div class="w3-top">
+    <div class="w3-bar w3-theme w3-top w3-left-align w3-large">
+      <a class="w3-bar-item w3-button w3-right w3-hide-large w3-hover-white w3-large w3-theme-l1" href="javascript:void(0)" onclick="w3_open()"><i class="fa fa-bars"></i></a>
+      <button class="w3-bar-item w3-button w3-hide-small w3-hover-white" id="info" onclick="infoClick()">Company</button>
+      <button href="company.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white" onclick="infoClick2()">Academy</button>
+      <button href="vedio.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white" onclick="vedioClick()">Video</button>
+      <button href="community.html" class="w3-bar-item w3-button w3-hide-small w3-hover-white" onclick="communityClick()" style="color:black">Afterward</button>
+    </div>
+  </div>
+
+
+<!-- Sidebar -->
+<nav class="w3-sidebar w3-bar-block w3-collapse w3-large w3-theme-l5 w3-animate-left" id="mySidebar">
+</nav>
+<div style="margin-top:80px;margin-left:300px">
+  <h1 style="color:blueviolet;">여러분들의 후기를 작성해주세요!!!</h1>
+</div>
+<form style="margin-left:300px">
+  <label>닉네임</label>
+  <input id="i1" type="text">
+  <br><br>
+  <label>응시날짜</label>
+  <input id="i2" type="text">
+  <br><br>
+  <label>나이</label>
+  <input id="i3" type="text">
+  <br><br>
+  <label>성별</label>
+  <input id="i4" type="text">
+  <br><br>
+  <label>장르</label>
+  <input id="i5" type="text">
+  <br><br>
+  <label>후기</label>
+  <textarea id="i6"></textarea>
+  <br><br>
+  <input style="margin-left:200px" type="button" value="확인" onclick="f1()">
+</form>
+<br><br><br>
+<span style="margin-left:300px;color:black;font-size:60px">게시판</span>
+<div style="margin-left:300px" id="content">
+
+</div>
+<script>
+    function infoClick()
+    {
+      window.location.href="audition.html"
+    }
+  
+    function infoClick2()
+    {
+      window.location.href="company.html";
+    }
+    
+  
+    function vedioClick()
+    {
+      window.location.href="vedio.html"
+    }
+  
+    function communityClick()
+    {
+      window.location.href="community.html"
+    }
+
+    function f2()
+    {
+      var content = document.getElementById("content");
+      //document.write("f2실행");
+      if(localStorage.length!=0)
+      {
+        for(var i=0;i<localStorage.length;i++)
+        {
+          var k = localStorage.key(i);
+          arr = localStorage.getItem(k).split("@");
+          if(k[0]!="!")
+          {
+            content.innerHTML+="<br>"+"닉네임 : "+arr[0] +"<br>"+
+          "응시날짜 : "+arr[1] + "<br>"+"나이 : "+arr[2]+"<br>"+
+            "성별 : " + arr[3]+"<br>"+"장르 : "+arr[4]+"<br>"+
+          "후기 : "+arr[5]+"<br>";
+          }
+        }
+      }
+    }
+
+    function f1()
+    {
+      var i1 = document.getElementById("i1");
+      var i2 = document.getElementById("i2");
+      var i3 = document.getElementById("i3");
+      var i4 = document.getElementById("i4");
+      var i5 = document.getElementById("i5");
+      var i6 = document.getElementById("i6");
+     
+      var str = i1.value;
+      var flag = 0;
+      for(var i = 0;i<localStorage.length;i++)
+      {
+          var k = localStorage.key(i);
+          if(k==str)
+          {
+            flag = 1;
+            break;
+          }
+      }
+      
+      if(flag ==0 )
+      {
+        var arr = new Array();
+        arr[0] = i1.value;
+        arr[1] = i2.value;
+        arr[2] = i3.value;
+        arr[3] = i4.value;
+        arr[4] = i5.value;
+        arr[5] = i6.value;
+        var temp = arr[0]+"@"+arr[1]+"@"+arr[2]+"@"+arr[3]+"@"+arr[4]+"@"+arr[5];
+        
+      
+          localStorage.setItem(arr[0],temp);
+
+          var content = document.getElementById("content");
+          content.innerHTML+="<br>"+"닉네임 : "+i1.value +"<br>"+
+          "응시날짜 : "+i2.value + "<br>"+"나이 : "+i3.value+"<br>"+
+          "성별 : " + i4.value+"<br>"+"장르 : "+i5.value+"<br>"+
+          "후기 : "+i6.value+"<br>";
+          i1.value="";
+          i2.value="";
+          i3.value="";
+          i4.value="";
+          i5.value="";
+          i6.value="";
+        
+      }
+      else{
+        alert("닉네임이 겹칩니다 다시 입력하세요!!");
+      }
+    }
+  </script>
+
+</body>
+</html>
