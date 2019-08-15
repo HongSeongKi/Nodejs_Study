@@ -13,7 +13,7 @@ var app = express();
 
 app.set('port', process.env.PORT || 3000); //port 정보 설정
 app.use(static(path.join(__dirname,'public')));
-app.use('upload',static(path.join(__dirname,'upload')));
+app.use(static(path.join(__dirname,'upload')));
 
 //app.use(express.static(__dirname+'/public'))
 app.use(bodyParser.urlencoded({extended:false}));
@@ -90,12 +90,13 @@ router.route('/process/showCookie').get(function(req,res){
     //res.end(req.cookies);
     res.send(req.cookies);
 })
-router.route('/process/login/:name').post(function(req,res){
+router.route('/process/login').post(function(req,res){
     console.log("login");
 
     //var p = req.params.name;
     var name = req.body.name || req.query.name;
     var password = req.body.password || req.query.password;
+    console.log(`name : ${name} , password : ${password}`);
 
     if(req.session.user){
         console.log('이미 로그인 되어 있습니다.');
