@@ -205,22 +205,16 @@ var updateUser = function(db,id,password,name,callback)
     console.log(`id : ${id} , password: : ${password}, name : ${name}`);
     console.log("update 호출됨 ");
     var users = db.collection("users");
-    if(db.find({"id":id, "password":password}))
-    {
-        users.updateOne({"id":id},{$set:{"name":name}},function(err){
-            if(err)
-            {
-                callback(err);
-            }
-            else{
-                callback(null);
-            }
+    
+    users.updateOne({"id":id},{$set:{"name":name}},function(err){
+        if(err)
+        {
+           callback(err);
+        }
+        else{
+            callback(null);
+        }
         })
-    }
-    else{
-        console.log("id password 불일치")
-    }
-
 }
 
 var errorHandler = expressErrorHandler({
