@@ -18,7 +18,7 @@ function connectDB(){
     
     mongoose.Promise = global.Promise;
     mongoose.connect(databaseUrl);
-    database = mongoose.connection;
+    database = mongoose.connection; 
     
     database.on('open',function(){
         console.log('데이터베이스에 연결됨 : ' + databaseUrl);
@@ -29,7 +29,7 @@ function connectDB(){
             password:String
         }); //자신이 정한 속성들의 해당하는 값을 넣겠다고 정의 , 스키마객체 반환, table정의라고 생각
         console.log('UserSchema 정의함.');
-        UserModel = mongoose.model('user',UserSchema) //모델 정의
+        UserModel = mongoose.model('users',UserSchema) //모델 정의
         console.log('UserModel 정의함');
     }) //연결되었을 떄 요청됨
     
@@ -59,6 +59,25 @@ app.use(expressSession({
 
 var router = express.Router();
 
+router.route('/users').get(function(req,res){ //전체리스트가져오기
+    var users={}
+    console.log("users");
+    var paramId = req.query.id;
+    var paramname = req.query.name;
+    console.log(`paramId : ${paramId} , paramname : ${paramname}`);
+    var person = {
+        id:paramId,
+        name:paramname
+    };
+    var person_str = JSON.stringify(person);
+    console.log(`person_str : ${person_str}`);
+    res.write(person_str);
+    res.end();
+})
+
+/*app.get('/users',(req,res)=>{
+    console.log('users enter');
+})*/
 
 router.route('/process/login').post(function(req,res){
     console.log('/process/login 라우팅 함수 호출됨');
@@ -151,6 +170,7 @@ router.route("/process/update").post(function(req,res){
     var id = data.id;
     var password = data.password;
     var name = data.name;
+    console.log(`process/update id : ${id} , password : ${password}, name : ${name}`);
     if(database){
         updateUser(database,id,password,name,function(err){
             if(err)
@@ -215,6 +235,16 @@ UserModel.where({id:'test01'}).update({name:'애프터스쿨'}),function(err){})
 where에 있는 것을 참조해서 update안에 있는 속성 값을 update한다.
  */
 
+ var updateUser = function(db,id,password,name,callback){
+    console.log("update User");
+    UserModel.where({id:id}).update({name:name}),function(err){
+        if(err){
+            callback(err);
+        }else{
+            callback(null);
+        }
+    }
+ }
 
 var errorHandler = expressErrorHandler({
     static:{
